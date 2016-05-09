@@ -25,6 +25,7 @@ if validation == "y":
 	os.system("sudo modprobe -r " + driver)
 	os.system("sudo rm /etc/modprobe.d/" + driver + ".conf")
 	os.system('sudo echo "options ' + driver + ' fwlps=N ips=N"  >>  /etc/modprobe.d/' + driver + '.conf')
+	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
 	print "Reboot your computer"
 else:
 	exit
