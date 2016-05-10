@@ -5,6 +5,7 @@ import sys
 
 if not os.geteuid() == 0:
     sys.exit('Script must be run as root')
+    
 color = '\033[91m'
 default = '\033[92m'
 print default + """\
@@ -18,7 +19,10 @@ print default + """\
                                                   
                                                   
 """
-os.system("TYPE=$(lspci -nnk | grep -A3 0280 | grep driver); echo $TYPE")
+if os.path.exists("/etc/arch-release") != True:
+	os.system("TYPE=$(lspci -nnk | grep -A3 0280 | grep driver); echo $TYPE")
+else:
+	os.system("lspci")
 
 driver = raw_input(color + "Wifi driver name: " + default)
 validation = raw_input(color + "Are you sure want to fix your wifi? (y/n) " + default)
@@ -30,7 +34,8 @@ if validation == "y":
 	file.write("options " + driver + " fwlps=N ips=N")
 	file.close()
 	os.system("sudo modprobe -i " + driver)
-	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
+	if os.path.exists("/etc/arch-release") != True:
+		os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
 	print "Reboot your computer"
 else:
 	exit
