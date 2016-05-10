@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import os.path
 import sys
 
 if not os.geteuid() == 0:
@@ -23,7 +24,8 @@ driver = raw_input(color + "Wifi driver name: " + default)
 validation = raw_input(color + "Are you sure want to fix your wifi? (y/n) " + default)
 if validation == "y":
 	os.system("sudo modprobe -r " + driver)
-	os.system("sudo rm /etc/modprobe.d/" + driver + ".conf")
+	if os.path.exists("/etc/modprobe.d/" + driver + ".conf") != True:
+		os.remove("/etc/modprobe.d/" + driver + ".conf")
 	os.system('sudo echo "options ' + driver + ' fwlps=N ips=N"  >>  /etc/modprobe.d/' + driver + '.conf')
 	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
 	print "Reboot your computer"
