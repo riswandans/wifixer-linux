@@ -26,7 +26,10 @@ if validation == "y":
 	os.system("sudo modprobe -r " + driver)
 	if os.path.exists("/etc/modprobe.d/" + driver + ".conf") == True:
 		os.remove("/etc/modprobe.d/" + driver + ".conf")
-	os.system('sudo echo "options ' + driver + ' fwlps=N ips=N"  >>  /etc/modprobe.d/' + driver + '.conf')
+	file = open("/etc/modprobe.d/" + driver + ".conf", "w")
+	file.write("options " + driver + " fwlps=N ips=N")
+	file.close()
+	os.system("sudo modprobe -i " + driver)
 	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
 	print "Reboot your computer"
 else:
