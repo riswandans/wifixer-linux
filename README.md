@@ -1,5 +1,5 @@
 ### Wifixer
-Additional tools for fix problems wifi on ubuntu distributions.
+Additional tools for fix problems wifi on ubuntu & archlinux distributions.
 
 Work on:
 * ArchLinux <b>[Updated]</b>
