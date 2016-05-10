@@ -27,13 +27,13 @@ def install(driver):
 	os.system("sudo modprobe -i " + driver)
 
 def notify(driver):
-	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
+	if check_os() == "ubuntu":
+		os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
 
 def application(driver, validation):
 	if validation == "y":
 		install(driver)
-		if check_os() == "ubuntu":
-			notify(driver)
+		notify(driver)
 		print "Reboot your computer"
 	else:
 		exit
