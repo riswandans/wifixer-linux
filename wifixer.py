@@ -28,6 +28,7 @@ driver = raw_input(color + "Wifi driver name: " + default)
 validation = raw_input(color + "Are you sure want to fix your wifi? (y/n) " + default)
 if validation == "y":
 	if os.path.exists("/etc/arch-release") != True:
+		install(driver)
 		notify(driver)
 	print "Reboot your computer"
 else:
