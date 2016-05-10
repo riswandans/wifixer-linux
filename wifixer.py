@@ -5,7 +5,19 @@ import sys
 
 if not os.geteuid() == 0:
     sys.exit('Script must be run as root')
-    
+
+def install(driver):
+	os.system("sudo modprobe -r " + driver)
+	if os.path.exists("/etc/modprobe.d/" + driver + ".conf") == True:
+		os.remove("/etc/modprobe.d/" + driver + ".conf")
+	file = open("/etc/modprobe.d/" + driver + ".conf", "w")
+	file.write("options " + driver + " fwlps=N ips=N")
+	file.close()
+	os.system("sudo modprobe -i " + driver)
+
+def notify(driver):
+	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
+
 color = '\033[91m'
 default = '\033[92m'
 print default + """\
@@ -33,15 +45,3 @@ if validation == "y":
 	print "Reboot your computer"
 else:
 	exit
-
-def install(driver):
-	os.system("sudo modprobe -r " + driver)
-	if os.path.exists("/etc/modprobe.d/" + driver + ".conf") == True:
-		os.remove("/etc/modprobe.d/" + driver + ".conf")
-	file = open("/etc/modprobe.d/" + driver + ".conf", "w")
-	file.write("options " + driver + " fwlps=N ips=N")
-	file.close()
-	os.system("sudo modprobe -i " + driver)
-
-def notify(driver):
-	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
