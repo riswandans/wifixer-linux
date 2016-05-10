@@ -23,8 +23,10 @@ driver = raw_input(color + "Wifi driver name: " + default)
 validation = raw_input(color + "Are you sure want to fix your wifi? (y/n) " + default)
 if validation == "y":
 	os.system("sudo modprobe -r " + driver)
-	os.system("sudo rm /etc/modprobe.d/" + driver + ".conf")
-	os.system('sudo echo "options ' + driver + ' fwlps=N ips=N"  >>  /etc/modprobe.d/' + driver + '.conf')
+	os.remove("/etc/modprobe.d/" + driver + ".conf")
+	file = os.open("/etc/modprobe.d/" + driver + ".conf",os.O_RDWR|os.CREAT)
+	write = os.write(file,"options " + driver + " fwlps=N ips=N")
+	os.close(file)
 	os.system('notify-send "WiFi Connection" "Success Installed driver ' + driver + '" -i notification-network-wireless-connected')
 	print "Reboot your computer"
 else:
